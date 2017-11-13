@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta lang="en-us" charset="UTF-8">
+
+    <link rel="stylesheet" href="reset.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" type="text/css" />
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <!--
+ for random words  from dictionary -
+ just use an arrayOfWords inside script.js
+ dictAPI done-->
+
+    <script type="text/javascript" src="./dictAPI/dictAPI.js"></script>
+    <script type="text/javascript" src="testscript.js"></script>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div id="header" class="row">
+            <h1>Hangman</h1>
+
+        </div>
+
+        <div class="row">
+            <div id="keyBoard" class="col-xs-12 col-md-4">
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="a" src="images/A.jpg" alt="Letter A"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="b" src="images/B.jpg" alt="Letter B"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="c" src="images/C.jpg" alt="Letter C"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="d" src="images/D.jpg" alt="Letter D"></img>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="e" src="images/E.jpg" alt="Letter E"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="f" src="images/F.jpg" alt="Letter F"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="g" src="images/G.jpg" alt="Letter G"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="h" src="images/H.jpg" alt="Letter H"></img>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="i" src="images/I.jpg" alt="Letter I"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="j" src="images/J.jpg" alt="Letter J"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="k" src="images/K.jpg" alt="Letter K"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="l" src="images/L.jpg" alt="Letter L"></img>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="m" src="images/M.jpg" alt="Letter M"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="n" src="images/N.jpg" alt="Letter N"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="o" src="images/O.jpg" alt="Letter O"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="p" src="images/P.jpg" alt="Letter P"></img>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="q" src="images/Q.jpg" alt="Letter Q"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="r" src="images/R.jpg" alt="Letter R"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="s" src="images/S.jpg" alt="Letter S"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="t" src="images/T.jpg" alt="Letter T"></img>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="u" src="images/U.jpg" alt="Letter U"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="v" src="images/V.jpg" alt="Letter V"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="w" src="images/W.jpg" alt="Letter W"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="x" src="images/X.jpg" alt="Letter X"></img>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="y" src="images/Y.jpg" alt="Letter Y"></img>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <img class="letter" data-letter="z" src="images/Z.jpg" alt="Letter Z"></img>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div id="gameBoard" class="col-sm-12 col-md-offset-2 col-md-6">
+
+                <h2>Guess This Word!</h2>
+                <div id="currentWord"></div>
+
+                <h2>Number of Guesses Left:</h2>
+                <div id="numGuesses"></div>
+
+                <h2> Number of Words Left:</h2>
+                <div id="numWords"></div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
