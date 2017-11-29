@@ -4,14 +4,21 @@ var hang = {
     currentWord: '',
     indexes: [],
     wordDisplay: [],
+    lettersGuessed: [], // Added to track which letters have already been guessed for a given word - Stephen
+    wordsLeft: 10,
 
     createWord: function() {
         hang.currentWord = arrayOfWords[hang.wordListIndex].toLowerCase();
         var firstDisplay = '';
 
-        if (hang.currentWord.includes(" ") || hang.currentWord.includes("-")) {
+        if (hang.currentWord.includes(" ") || hang.currentWord.includes("-") || hang.currentWord.includes("'")) {
             hang.wordListIndex++;
-            hang.createWord();
+            if (hang.wordListIndex > 9) {
+                hang.reset();
+            }
+            else {
+                hang.createWord();
+            }
         }
 
         else {
@@ -20,9 +27,13 @@ var hang = {
                 firstDisplay = firstDisplay + " " + hang.wordDisplay[i];
             }
 
-            console.log("first word is: " + hang.currentWord);
-            console.log("first display is: " + firstDisplay);
+            console.log("word is: " + hang.currentWord);
+            console.log("display is: " + firstDisplay);
             $("#currentWord").text(firstDisplay);
+
+            //update number of words left in case some were skipped with qualifier
+            hang.wordsLeft = 10 - hang.wordListIndex;
+            $("#numWords").text(hang.wordsLeft);
         }
         //here should we use a variable
         //(for example here I used wordListIndex) so that we can keep calling this function
@@ -51,7 +62,27 @@ var hang = {
         console.log("letter guessed: " + letter);
         if (hang.currentWord.indexOf(letter) == -1) {
             console.log("no match found");
-            hang.guessesLeft--;
+
+            //Check if letter has been guessed before - Stephen
+            if (!hang.lettersGuessed.includes(letter)) {
+                hang.guessesLeft--;
+
+                //Update guessesLeft on screen - Stephen
+                $("#numGuesses").text(hang.guessesLeft);
+
+                //Push the guessed letter to lettersGuessed array - Stephen
+                hang.lettersGuessed.push(letter);
+
+                if (hang.guessesLeft === 0) {
+                    alert("Almost! The correct word is: " + this.currentWord);
+                    hang.wordsLeft--;
+                    hang.reset();
+                }
+
+            }
+            else {
+                console.log("Letter already guessed.");
+            }
         }
         else {
             console.log("match found");
@@ -91,31 +122,65 @@ var hang = {
         console.log("updated display is: " + newDisplay);
         $("#currentWord").text(newDisplay);
         hang.indexes = [];
-    },
 
-    clicked: function() {
-        //have button clicked change to unclickable
-    },
-
-    reset: function() {
-        hang.wordListIndex++;
-        hang.currentWord = '';
-        hang.emptyWord = '';
-        hang.guessesLeft = 8;
-
-        hang.createWord();
-
-    },
-
-    win: function() {
-        if (hang.emptyWord === hang.currentWord) {
-            //display "You are correct!"
+        if (hang.currentWord === hang.wordDisplay.join("")) {
+            alert("Correct! The word is: " + hang.currentWord);
+            if (hang.wordsLeft === 0) {
+                alert("Game over.");
+            }
             hang.reset();
         }
     },
 
-    lose: function() {
-        //display "incorrect"
+    reset: function() {
+        hang.wordListIndex++;
+        if (hang.wordListIndex > 9) {
+            alert("Congratulations, you've made it through the world's hardest hangman.");
+
+            hang.wordListIndex = 0;
+            hang.guessesLeft = 8;
+            hang.currentWord = '';
+            hang.indexes = [];
+            hang.wordDisplay = [];
+            hang.lettersGuessed = [];
+            hang.wordsLeft = 10;
+
+            // Reset opacity of all letters on keyboard to 1.0 - Stephen
+            $("#keyBoard img").css("opacity", "initial");
+
+            var request = makeWordnikRequest();
+            request.done(function() {
+                console.log(arrayOfWords);
+                hang.createWord();
+                $("#currentWord").text(hang.emptyWord);
+                $("#numGuesses").text(hang.guessesLeft);
+                $("#numWords").empty().text(hang.wordsLeft);
+            });
+            //now we can use arrayOfWords array - it stores 10 random words - but, dont forget about async and request.done function;
+
+        }
+
+        else {
+            hang.guessesLeft = 8;
+            hang.currentWord = '';
+            hang.indexes = [];
+            hang.wordDisplay = [];
+
+            // Reset opacity of all letters on keyboard to 1.0 - Stephen
+            $("#keyBoard img").css("opacity", "initial");
+
+            // Reset number of guesses on screen - Stephen
+            $("#numGuesses").text(hang.guessesLeft);
+
+            // Update number of words left
+            $("#numWords").text(hang.wordsLeft);
+
+            // Reset lettersGuessed array - Stephen
+            hang.lettersGuessed = [];
+
+            // Create new word
+            hang.createWord();
+        }
     },
 };
 
@@ -128,20 +193,18 @@ $(document).ready(function() {
         hang.createWord();
         $("#currentWord").text(hang.emptyWord);
         $("#numGuesses").text(hang.guessesLeft);
-    })
+        $("#numWords").empty().text(hang.wordsLeft);
+    });
     //now we can use arrayOfWords array - it stores 10 random words - but, dont forget about async and request.done function;
-
-    // hang.createWord();
-    // $("#currentWord").text(hang.emptyWord);
-    // $("#numGuesses").text(hang.guessesLeft);
-
 
     $(".letter").click(function() {
         console.log($(this).data("letter"));
-        hang.checkLetter($(this).data("letter"));
-        console.log(this);
-        console.log($(this));
-    });
 
+        //Make clicked letter 0.5 opacity.  I didn't put in checkLetter function because of $(this) being tied to the click listenter. - Stephen
+        $(this).css("opacity", "0.5");
+
+        hang.checkLetter($(this).data("letter"));
+
+    });
 
 });
